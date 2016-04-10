@@ -10,9 +10,7 @@ namespace _04.TowerOfHanoi
 
     class Program
     {
-        static IEnumerable<int> range = Enumerable.Range(1, 3);
-        static int stepsTaken = 0;
-
+        static int stepsTaken;
         static Stack<int> source = new Stack<int>();
         static Stack<int> destination = new Stack<int>();
         static Stack<int> spare = new Stack<int>();

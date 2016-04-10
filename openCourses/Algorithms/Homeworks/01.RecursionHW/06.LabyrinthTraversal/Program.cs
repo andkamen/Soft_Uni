@@ -24,12 +24,12 @@ namespace _06.LabyrinthTraversal
         public static void Main()
         {
             //ReadLabyrinth();
-            
-            FindPathToExist();
+
+            FindPathToExit();
 
         }
 
-        static void FindPathToExist()
+        static void FindPathToExit()
         {
             for (int row = 0; row < labyrinth.GetLength(0); row++)
             {
@@ -50,14 +50,11 @@ namespace _06.LabyrinthTraversal
         {
             if (!InRange(row, col))
             {
-                // We are out of the labyrinth -> can't find a path
                 return;
             }
 
-            // Append the current direction to the path
             path.Add(direction);
 
-            // Check if we have found the exit
             if (labyrinth[row, col] == 'e')
             {
                 PrintPath(path);
@@ -66,20 +63,16 @@ namespace _06.LabyrinthTraversal
 
             if (labyrinth[row, col] == ' ')
             {
-                // Temporary mark the current cell as visited
                 labyrinth[row, col] = '.';
 
-                // Recursively explore all possible directions
-                TryDirection(row, col - 1, 'L'); // left
-                TryDirection(row - 1, col, 'U'); // up
-                TryDirection(row, col + 1, 'R'); // right
-                TryDirection(row + 1, col, 'D'); // down
+                TryDirection(row, col - 1, 'L');
+                TryDirection(row - 1, col, 'U');
+                TryDirection(row, col + 1, 'R');
+                TryDirection(row + 1, col, 'D');
 
-                // Mark back the current cell as free
                 labyrinth[row, col] = ' ';
             }
 
-            // Remove the last direction from the path
             path.RemoveAt(path.Count - 1);
         }
 
@@ -99,6 +92,7 @@ namespace _06.LabyrinthTraversal
                 {
                     Console.Write("{0} ", labyrinth[row, col]);
                 }
+
                 Console.WriteLine();
             }
         }
@@ -113,13 +107,14 @@ namespace _06.LabyrinthTraversal
             Console.WriteLine();
         }
 
-        //Doesn't Work well with the input from the HW doc, because copy paste from a table sucks :( 
+        //Doesn't Work well with the input from the HW doc, because copy paste from a word table sucks :(  ☺☺
+        //might as well not use at all
         static void ReadLabyrinth()
         {
             List<string> inputData = new List<string>();
 
             string input = Console.ReadLine();
-                input.Replace("\t"," ");
+            input.Replace("\t", " ");
             while (!string.IsNullOrWhiteSpace(input))
             {
                 inputData.Add(input);
