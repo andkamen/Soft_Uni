@@ -21,12 +21,18 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+
 progBasics/
 progFundamentals/
+VariousEx/
+
+GroupProject/
 
 C_Programing/
 Data_Structures/
 Linux_Programing/
+C++/
+
 
 .gitignore
 exams.xlsx
