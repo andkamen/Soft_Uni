@@ -1,19 +1,18 @@
 package com;
 
+import com.IO.InputReader;
+import com.IO.OutputWriter;
+import com.Judge.Tester;
+
+import java.io.IOException;
+
 public class Program {
 
     public static void main(String[] args) {
-
-        //traverseDirectory("D:\\Doc\\Kamen\\Soft_Uni\\javaFundamentals");
-
-        // String test1path = "D:\\Doc\\Kamen\\Soft_Uni\\javaFundamentals\\advancedJava\\Labs\\test2.txt";
-        // String test2path = "D:\\Doc\\Kamen\\Soft_Uni\\javaFundamentals\\advancedJava\\Labs\\test3.txt";
-        // Tester.compareContent(test1path,test2path);
-
-        IOManager.createDirectoryInCurrentFolder("TestDir");
-
-
-        // StudentsRepository.initializeData();
-        // StudentsRepository.getStudentByCourse("Unity");
+        try{
+            InputReader.readCommands();
+        } catch (IOException e) {
+            OutputWriter.displayException(e.getMessage());
+        }
     }
 }
