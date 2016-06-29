@@ -22,6 +22,8 @@ bld/
 [Oo]bj/
 [Ll]og/
 
+#Files to ignores:
+#----------------------------------
 progBasics/
 progFundamentals/
 VariousEx/
@@ -40,6 +42,8 @@ exams.xlsx
 Камен Петров - 02-20.xls
 KamenPetrov-May2016 - Copy.xls
 
+
+#-----------------------------------------------------
 # Visual Studio 2015 cache/options directory
 .vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot
