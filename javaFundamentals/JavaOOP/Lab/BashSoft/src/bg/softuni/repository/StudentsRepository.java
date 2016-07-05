@@ -1,5 +1,7 @@
 package bg.softuni.repository;
 
+import bg.softuni.models.Course;
+import bg.softuni.models.Student;
 import bg.softuni.staticData.SessionData;
 import bg.softuni.io.OutputWriter;
 import bg.softuni.staticData.ExceptionMessages;
@@ -14,7 +16,8 @@ import java.util.regex.Pattern;
 public class StudentsRepository {
 
     private boolean isDataInitialized = false;
-    private HashMap<String, HashMap<String, ArrayList<Integer>>> studentsByCourse;
+    private LinkedHashMap<String, Course> courses;
+    private LinkedHashMap<String, Student> students;
     private RepositoryFilter filter;
     private RepositorySorter sorter;
 
@@ -29,23 +32,25 @@ public class StudentsRepository {
             return;
         }
 
-        this.studentsByCourse = new HashMap<>();
+        this.students = new LinkedHashMap<>();
+        this.courses = new LinkedHashMap<>();
         this.readData(fileName);
     }
+
     public void unloadData() {
         if (!this.isDataInitialized) {
             OutputWriter.displayException(ExceptionMessages.DATA_NOT_INITIALIZED);
             return;
         }
 
-        this.studentsByCourse = null;
+        this.students = null;
+        this.courses = null;
         this.isDataInitialized = false;
     }
 
 
-
     private void readData(String fileName) throws IOException {
-        String regex = "([A-Z][a-zA-Z#+]*_[A-Z][a-z]{2}_\\d{4})\\s+([A-Z][a-z]{0,3}\\d{2}_\\d{2,4})\\s+(\\d+)";
+        String regex = "([A-Z][a-zA-Z#\\+]*_[A-Z][a-z]{2}_\\d{4})\\s+([A-Za-z]+\\d{2}_\\d{2,4})\\s([\\s0-9]+)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher;
 
@@ -56,20 +61,41 @@ public class StudentsRepository {
             matcher = pattern.matcher(line);
 
             if (!line.isEmpty() && matcher.find()) {
-                String course = matcher.group(1);
-                String student = matcher.group(2);
-                Integer mark = Integer.parseInt(matcher.group(3));
+                String courseName = matcher.group(1);
+                String studentName = matcher.group(2);
+                String scoresStr = matcher.group(3);
 
-                if (mark >= 0 && mark <= 100) {
-                    if (!studentsByCourse.containsKey(course)) {
-                        studentsByCourse.put(course, new LinkedHashMap<>());
+                try {
+                    String[] splitScores = scoresStr.split("\\s+");
+                    int[] scores = new int[scoresStr.length()];
+                    for (int i = 0; i < splitScores.length; i++) {
+                        scores[i] = Integer.valueOf(splitScores[i]);
                     }
 
-                    if (!studentsByCourse.get(course).containsKey(student)) {
-                        studentsByCourse.get(course).put(student, new ArrayList<>());
+                    if (Arrays.stream(scores).anyMatch(score -> score > 100 || score < 0)) {
+                        OutputWriter.displayException(ExceptionMessages.INVALID_SCORE);
+                        continue;
                     }
 
-                    studentsByCourse.get(course).get(student).add(mark);
+                    if (scores.length > Course.NUMBER_OF_TASKS_ON_EXAM) {
+                        OutputWriter.displayException(ExceptionMessages.INVALID_NUMBER_OF_SCORES);
+                        continue;
+                    }
+
+                    if (!this.students.containsKey(studentName)) {
+                        this.students.put(studentName, new Student(studentName));
+                    }
+
+                    if (!this.courses.containsKey(courseName)) {
+                        this.courses.put(courseName, new Course(courseName));
+                    }
+                    Course course = this.courses.get(courseName);
+                    Student student = this.students.get(studentName);
+                    student.enrollInCourse(course);
+                    student.setMarkOnCourse(courseName, scores);
+                    course.enrollStudent(student);
+                } catch (NumberFormatException nfe) {
+                    OutputWriter.displayException(nfe.getMessage());
                 }
             }
         }
@@ -78,47 +104,24 @@ public class StudentsRepository {
         OutputWriter.writeMessageOnNewLine("Data read.");
     }
 
-    public void printFilteredStudents(String course, String filter, Integer numberOfStudents) {
-        if (! isQueryForCoursePossible(course)) {
+    public void getStudentMarkInCourse(String courseName, String studentName) {
+        if (!isQueryForStudentPossible(courseName, studentName)) {
             return;
         }
 
-        if (numberOfStudents == null) {
-            numberOfStudents = studentsByCourse.get(course).size();
-        }
-
-        this.filter.printFilteredStudents(studentsByCourse.get(course), filter, numberOfStudents);
+        double mark = this.courses.get(courseName).studentsByName
+                .get(studentName).marksByCourseName.get(courseName);
+        OutputWriter.printStudent(studentName, mark);
     }
 
-    public void printOrderedStudents(String course, String compareType, Integer numberOfStudents) {
-        if (!isQueryForCoursePossible(course)) {
+    public void getStudentsByCourse(String courseName) {
+        if (!isQueryForCoursePossible(courseName)) {
             return;
         }
 
-        if (numberOfStudents == null) {
-            numberOfStudents = studentsByCourse.get(course).size();
-        }
-
-        this.sorter.printSortedStudents(studentsByCourse.get(course), compareType, numberOfStudents);
-    }
-
-    public void getStudentMarksInCourse(String course, String student) {
-        if (!isQueryForStudentPossible(course, student)) {
-            return;
-        }
-
-        ArrayList<Integer> marks = studentsByCourse.get(course).get(student);
-        OutputWriter.printStudent(student, marks);
-    }
-
-    public void getStudentsByCourse(String course) {
-        if (!isQueryForCoursePossible(course)) {
-            return;
-        }
-
-        OutputWriter.writeMessageOnNewLine(course + ":");
-        for (Map.Entry<String, ArrayList<Integer>> student : studentsByCourse.get(course).entrySet()) {
-            OutputWriter.printStudent(student.getKey(), student.getValue());
+        OutputWriter.writeMessageOnNewLine(courseName + ":");
+        for (Map.Entry<String, Student> student : this.courses.get(courseName).studentsByName.entrySet()) {
+            this.getStudentMarkInCourse(courseName, student.getKey());
         }
     }
 
@@ -128,7 +131,7 @@ public class StudentsRepository {
             return false;
         }
 
-        if (!studentsByCourse.containsKey(courseName)) {
+        if (!this.courses.containsKey(courseName)) {
             OutputWriter.displayException(ExceptionMessages.NON_EXISTING_COURSE);
             return false;
         }
@@ -141,7 +144,7 @@ public class StudentsRepository {
             return false;
         }
 
-        if (!studentsByCourse.get(courseName).containsKey(studentName)) {
+        if (!this.courses.get(courseName).studentsByName.containsKey(studentName)) {
             OutputWriter.displayException(ExceptionMessages.NON_EXISTING_STUDENT);
             return false;
         }
@@ -150,7 +153,7 @@ public class StudentsRepository {
     }
 
     public void filterAndTake(String courseName, String filter) {
-        int studentsToTake = studentsByCourse.get(courseName).size();
+        int studentsToTake = this.courses.get(courseName).studentsByName.size();
         filterAndTake(courseName, filter, studentsToTake);
     }
 
@@ -159,10 +162,12 @@ public class StudentsRepository {
         if (!isQueryForCoursePossible(courseName)) {
             return;
         }
+        LinkedHashMap<String, Double> marks = new LinkedHashMap<>();
+        for (Map.Entry<String, Student> entry : this.courses.get(courseName).studentsByName.entrySet()) {
+            marks.put(entry.getKey(), entry.getValue().marksByCourseName.get(courseName));
+        }
 
-        this.filter.printFilteredStudents(
-                studentsByCourse.get(courseName),
-                filter, studentsToTake);
+        this.filter.printFilteredStudents(marks, filter, studentsToTake);
     }
 
     public void orderAndTake(
@@ -170,14 +175,16 @@ public class StudentsRepository {
         if (!isQueryForCoursePossible(courseName)) {
             return;
         }
+        LinkedHashMap<String, Double> marks = new LinkedHashMap<>();
+        for (Map.Entry<String, Student> entry : this.courses.get(courseName).studentsByName.entrySet()) {
+            marks.put(entry.getKey(), entry.getValue().marksByCourseName.get(courseName));
+        }
 
-        this.sorter.printSortedStudents(
-                studentsByCourse.get(courseName),
-                orderType, studentsToTake);
+        this.sorter.printSortedStudents(marks, orderType, studentsToTake);
     }
 
     public void orderAndTake(String courseName, String orderType) {
-        int studentsToTake = studentsByCourse.get(courseName).size();
+        int studentsToTake = this.courses.get(courseName).studentsByName.size();
         orderAndTake(courseName, orderType, studentsToTake);
     }
 }

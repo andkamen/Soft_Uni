@@ -1,7 +1,6 @@
 package bg.softuni.staticData;
 
 public class ExceptionMessages {
-    public static final String EXAMPLE_EXCEPTION_MESSAGE = "Example message.";
     public static final String DATA_ALREADY_INITIALIZED = "Data is already initialized.";
     public static final String DATA_NOT_INITIALIZED = "Data is not initialized.";
     public static final String NON_EXISTING_COURSE = "Course does not exist.";
@@ -19,5 +18,13 @@ public class ExceptionMessages {
             "The take command expected does not match the format wanted!";
     public static final String IVALID_TAKE_QUANTITY_PARAMETER =
             "The quantity you are trying to take is an invalid parameter!";
+    public static final String STUDEN_ALREADY_ENROLLED_IN_GIVEN_COURSE =
+            "The %s already exists in %s";
+    public static final String NOT_ENROLLED_IN_COURSE  =
+            "Student must be enrolled in a course before you set his mark.";
+    public static final String INVALID_NUMBER_OF_SCORES =
+            "The number of scores for the given course is greater than the possible.";
+    public static final String INVALID_SCORE = "Score can't be below 0 or above 100";
+
 }
 

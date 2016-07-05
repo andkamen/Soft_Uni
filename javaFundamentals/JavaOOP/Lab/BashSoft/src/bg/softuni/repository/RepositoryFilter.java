@@ -1,5 +1,6 @@
 package bg.softuni.repository;
 
+import bg.softuni.io.InputReader;
 import bg.softuni.staticData.ExceptionMessages;
 import bg.softuni.io.OutputWriter;
 
@@ -9,7 +10,7 @@ import java.util.function.Predicate;
 
 public class RepositoryFilter {
     public void printFilteredStudents(
-            HashMap<String, ArrayList<Integer>> courseData,
+            HashMap<String, Double> studentsWithMarks,
             String filterType,
             Integer numberOfStudents) {
 
@@ -21,24 +22,15 @@ public class RepositoryFilter {
         }
 
         int studentsCount = 0;
-        for (String student : courseData.keySet()) {
+        for (String student : studentsWithMarks.keySet()) {
             if (studentsCount >= numberOfStudents) {
                 break;
             }
 
-            ArrayList<Integer> studentMarks = courseData.get(student);
-
-            Double averageMark = studentMarks
-                    .stream()
-                    .mapToInt(Integer::valueOf)
-                    .average()
-                    .getAsDouble();
-
-            Double percentageOfFulfilment = averageMark / 100;
-            Double mark = percentageOfFulfilment * 4 + 2;
+            Double mark = studentsWithMarks.get(student);
 
             if (filter.test(mark)) {
-                OutputWriter.printStudent(student, studentMarks);
+                OutputWriter.printStudent(student, mark);
                 studentsCount++;
             }
         }

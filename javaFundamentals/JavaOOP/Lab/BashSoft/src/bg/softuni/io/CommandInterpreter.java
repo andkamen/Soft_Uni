@@ -194,7 +194,7 @@ public class CommandInterpreter {
         if (data.length == 3) {
             String courseName = data[1];
             String userName = data[2];
-            this.repository.getStudentMarksInCourse(courseName, userName);
+            this.repository.getStudentMarkInCourse(courseName, userName);
         }
     }
 
