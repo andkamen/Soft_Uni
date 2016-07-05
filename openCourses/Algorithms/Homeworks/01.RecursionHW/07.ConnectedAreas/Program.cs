@@ -37,6 +37,7 @@ namespace _07.ConnectedAreas
             //ReadLabyrinth();
 
             FindConnectedAreas();
+            PrintLabyrinth();
 
         }
 
@@ -100,31 +101,6 @@ namespace _07.ConnectedAreas
                     Console.Write("{0} ", matrix[row, col]);
                 }
                 Console.WriteLine();
-            }
-        }
-
-        //Doesn't Work well with the input from the HW doc, because copy paste from a table sucks :( 
-        static void ReadLabyrinth()
-        {
-            List<string> inputData = new List<string>();
-
-            string input = Console.ReadLine();
-            input.Replace("\t", " ");
-            while (!string.IsNullOrWhiteSpace(input))
-            {
-                inputData.Add(input);
-                input = Console.ReadLine();
-                input.Replace("\t", " ");
-            }
-
-            matrix = new char[inputData.Count, inputData[0].Length];
-
-            for (int row = 0; row < matrix.GetLength(0); row++)
-            {
-                for (int col = 0; col < matrix.GetLength(1); col++)
-                {
-                    matrix[row, col] = inputData[row][col];
-                }
             }
         }
     }

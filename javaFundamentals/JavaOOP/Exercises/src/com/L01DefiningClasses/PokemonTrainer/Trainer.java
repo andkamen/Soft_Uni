@@ -42,6 +42,7 @@ public class Trainer {
     }
 
     public void updateTrainer(String element){
+
         for (Pokemon pokemon : pokemons) {
             if (pokemon.getElement().equals(element)) {
                 awardBadge();

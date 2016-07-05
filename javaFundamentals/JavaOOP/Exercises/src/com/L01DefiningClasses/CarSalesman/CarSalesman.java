@@ -53,16 +53,13 @@ public class CarSalesman {
             if (parameters.length == 4) {
                 car = new Car(model, engine, Integer.valueOf(parameters[2]), parameters[3]);
             }
-
             carData.add(car);
         }
-
 
         for (Car car : carData) {
             System.out.print(car.toString());
         }
     }
-
 
     private static boolean isNumber(String argument) {
         try {
