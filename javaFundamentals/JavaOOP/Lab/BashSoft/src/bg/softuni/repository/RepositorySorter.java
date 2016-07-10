@@ -39,7 +39,7 @@ public class RepositorySorter {
         printStudents(courseData, sortedStudents);
     }
 
-    private void printStudents(HashMap<String,Double> courseData, List<String> sortedStudents) {
+    private void printStudents(HashMap<String, Double> courseData, List<String> sortedStudents) {
         for (String student : sortedStudents) {
             OutputWriter.printStudent(student, courseData.get(student));
         }

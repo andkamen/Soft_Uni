@@ -1,5 +1,6 @@
 package bg.softuni.judge;
 
+import bg.softuni.exceptions.InvalidPathException;
 import bg.softuni.io.OutputWriter;
 import bg.softuni.staticData.ExceptionMessages;
 
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class Tester {
 
-    public void compareContent(String actualOutput, String expectedOutput) {
+    public void compareContent(String actualOutput, String expectedOutput) throws IOException {
         try {
             OutputWriter.writeMessageOnNewLine("Reading files...");
             String mismatchPath = getMismatchPath(expectedOutput);
@@ -28,7 +29,7 @@ public class Tester {
                 OutputWriter.writeMessageOnNewLine("Files are identical. There are no mismatches.");
             }
         } catch (IOException ioe) {
-            OutputWriter.displayException(ExceptionMessages.INVALID_PATH);
+            throw new InvalidPathException();
         }
     }
 
@@ -59,8 +60,7 @@ public class Tester {
     }
 
     private void printOutput(String mismatchPath, boolean isMismatch) throws IOException {
-        if (isMismatch)
-        {
+        if (isMismatch) {
             List<String> mismatchStrings = Files.readAllLines(Paths.get(mismatchPath));
             mismatchStrings.forEach(OutputWriter::writeMessageOnNewLine);
             return;
@@ -72,8 +72,7 @@ public class Tester {
     private boolean compareStrings(
             List<String> actualOutputString,
             List<String> expectedOutputString,
-            String mismatchPath)
-    {
+            String mismatchPath) {
         OutputWriter.writeMessageOnNewLine("Comparing files...");
         String output = "";
         boolean isMismatch = false;

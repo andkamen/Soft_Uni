@@ -16,7 +16,5 @@ public class Main {
 
         Method method = listClass.getDeclaredMethods()[0];
         System.out.println(method.getReturnType().getSimpleName());
-
-
     }
 }

@@ -7,7 +7,7 @@ import bg.softuni.judge.Tester;
 import bg.softuni.network.DownloadManager;
 import bg.softuni.repository.RepositoryFilter;
 import bg.softuni.repository.RepositorySorter;
-import bg.softuni.repository.StudentsRepository;
+import bg.softuni.repository.StudentRepository;
 
 public class Main {
 
@@ -17,7 +17,7 @@ public class Main {
         IOManager ioManager = new IOManager();
         RepositorySorter sorter = new RepositorySorter();
         RepositoryFilter filter = new RepositoryFilter();
-        StudentsRepository repository = new StudentsRepository(filter, sorter);
+        StudentRepository repository = new StudentRepository(filter, sorter);
         CommandInterpreter currentInterpreter =
                 new CommandInterpreter(tester, repository, downloadManager, ioManager);
         InputReader reader = new InputReader(currentInterpreter);
