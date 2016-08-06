@@ -74,4 +74,14 @@ public class SoftUniStudent implements Student {
                 this.userName, marksByCourseName.get(courseName));
         return output;
     }
+
+    @Override
+    public int compareTo(Student other) {
+        return this.getUserName().compareTo(other.getUserName());
+    }
+
+    @Override
+    public String toString() {
+        return this.getUserName();
+    }
 }

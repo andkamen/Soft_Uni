@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class SoftUniCourse implements Course{
+public class SoftUniCourse implements Course {
 
     private String name;
     private Map<String, Student> studentsByName;
@@ -41,5 +41,15 @@ public class SoftUniCourse implements Course{
         }
 
         this.studentsByName.put(student.getUserName(), student);
+    }
+
+    @Override
+    public int compareTo(Course other) {
+        return this.getName().compareTo(other.getName());
+    }
+
+    @Override
+    public String toString() {
+        return this.getName();
     }
 }

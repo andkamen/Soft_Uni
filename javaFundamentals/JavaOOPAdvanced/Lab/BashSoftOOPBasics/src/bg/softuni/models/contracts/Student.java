@@ -1,9 +1,10 @@
 package bg.softuni.models.contracts;
 
 
+import java.util.Comparator;
 import java.util.Map;
 
-public interface Student {
+public interface Student extends Comparable<Student> {
 
     String getUserName();
 
