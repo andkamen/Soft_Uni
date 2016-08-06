@@ -2,6 +2,7 @@ package bg.softuni.network;
 
 import bg.softuni.exceptions.InvalidPathException;
 import bg.softuni.io.OutputWriter;
+import bg.softuni.network.contracts.AsynchDownloader;
 import bg.softuni.staticData.SessionData;
 
 import java.io.File;
@@ -12,7 +13,7 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-public class DownloadManager {
+public class DownloadManager implements AsynchDownloader{
 
     public void download(String fileUrl) {
         URL url;

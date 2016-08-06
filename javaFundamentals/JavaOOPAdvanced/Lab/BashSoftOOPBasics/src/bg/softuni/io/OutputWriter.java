@@ -23,7 +23,7 @@ public class OutputWriter {
      * This method doesn't belong in the OutputWriter.
      *
      * @deprecated use {@link #writeMessageOnNewLine(String message)}
-     * with String.format() and methods from the Student class instead.
+     * with String.format() and methods from the SoftUniStudent class instead.
      */
     @Deprecated
     public static void printStudent(String name, Double mark) {

@@ -2,13 +2,14 @@ package bg.softuni.io;
 
 import bg.softuni.exceptions.InvalidFileNameException;
 import bg.softuni.exceptions.InvalidPathException;
+import bg.softuni.io.contracts.DirectoryManager;
 import bg.softuni.staticData.SessionData;
 
 import java.io.File;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class IOManager {
+public class IOManager implements DirectoryManager {
 
     public void traverseDirectory(int depth) {
         Queue<File> subFolders = new LinkedList<>();
@@ -71,11 +72,11 @@ public class IOManager {
             // go to a given directory
             String currentPath = SessionData.currentPath;
             currentPath += "\\" + relativePath;
-            changeCurrentDirAbsolute(currentPath);
+            changeCurrentDirAbsolutePath(currentPath);
         }
     }
 
-    public void changeCurrentDirAbsolute(String absolutePath) {
+    public void changeCurrentDirAbsolutePath(String absolutePath) {
         File file = new File(absolutePath);
         if (!file.exists()) {
             throw new InvalidPathException();

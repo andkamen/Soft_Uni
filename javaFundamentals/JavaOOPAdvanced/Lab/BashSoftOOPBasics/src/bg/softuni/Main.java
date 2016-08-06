@@ -1,5 +1,6 @@
 package bg.softuni;
 
+import bg.softuni.io.contracts.Interpreter;
 import bg.softuni.io.CommandInterpreter;
 import bg.softuni.io.IOManager;
 import bg.softuni.io.InputReader;
@@ -9,6 +10,7 @@ import bg.softuni.network.DownloadManager;
 import bg.softuni.repository.RepositoryFilter;
 import bg.softuni.repository.RepositorySorter;
 import bg.softuni.repository.StudentsRepository;
+import bg.softuni.repository.contracts.Database;
 
 public class Main {
 
@@ -18,8 +20,8 @@ public class Main {
         IOManager ioManager = new IOManager();
         RepositorySorter sorter = new RepositorySorter();
         RepositoryFilter filter = new RepositoryFilter();
-        StudentsRepository repository = new StudentsRepository(filter, sorter);
-        CommandInterpreter currentInterpreter = new CommandInterpreter(
+        Database repository = new StudentsRepository(filter, sorter);
+        Interpreter currentInterpreter = new CommandInterpreter(
                 tester, repository, downloadManager, ioManager);
         InputReader reader = new InputReader(currentInterpreter);
 

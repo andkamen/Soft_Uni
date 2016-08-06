@@ -1,8 +1,13 @@
 package bg.softuni.repository;
 
 import bg.softuni.io.OutputWriter;
-import bg.softuni.models.Course;
-import bg.softuni.models.Student;
+import bg.softuni.models.SoftUniCourse;
+import bg.softuni.models.SoftUniStudent;
+import bg.softuni.models.contracts.Course;
+import bg.softuni.models.contracts.Student;
+import bg.softuni.repository.contracts.DataFilter;
+import bg.softuni.repository.contracts.DataSorter;
+import bg.softuni.repository.contracts.Database;
 import bg.softuni.staticData.ExceptionMessages;
 import bg.softuni.staticData.SessionData;
 
@@ -16,17 +21,17 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class StudentsRepository {
+public class StudentsRepository  implements Database{
 
-    private LinkedHashMap<String, Course> courses;
-    private LinkedHashMap<String, Student> students;
+    private Map<String, Course> courses;
+    private Map<String, Student> students;
     private boolean isDataInitialized;
-    private RepositoryFilter filter;
-    private RepositorySorter sorter;
+    private DataFilter filter;
+    private DataSorter sorter;
 
     public StudentsRepository(
-            RepositoryFilter filter,
-            RepositorySorter sorter) {
+            DataFilter filter,
+            DataSorter sorter) {
         this.filter = filter;
         this.sorter = sorter;
     }
@@ -83,10 +88,10 @@ public class StudentsRepository {
                         continue;
                     }
                     if (!this.students.containsKey(studentName)) {
-                        this.students.put(studentName, new Student(studentName));
+                        this.students.put(studentName, new SoftUniStudent(studentName));
                     }
                     if (!this.courses.containsKey(courseName)) {
-                        this.courses.put(courseName, new Course(courseName));
+                        this.courses.put(courseName, new SoftUniCourse(courseName));
                     }
                     Course course = this.courses.get(courseName);
                     Student student = this.students.get(studentName);

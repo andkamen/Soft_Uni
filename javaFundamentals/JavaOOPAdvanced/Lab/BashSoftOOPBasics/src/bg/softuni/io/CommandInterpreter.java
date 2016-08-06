@@ -1,24 +1,28 @@
 package bg.softuni.io;
 
+import bg.softuni.commands.contracts.Executable;
+import bg.softuni.io.contracts.DirectoryManager;
+import bg.softuni.io.contracts.Interpreter;
 import bg.softuni.exceptions.InvalidInputException;
-import bg.softuni.io.commands.*;
+import bg.softuni.commands.*;
 import bg.softuni.judge.Tester;
 import bg.softuni.network.DownloadManager;
 import bg.softuni.repository.StudentsRepository;
+import bg.softuni.repository.contracts.Database;
 
 import java.io.IOException;
 
-public class CommandInterpreter {
+public class CommandInterpreter implements Interpreter {
 
     private Tester tester;
-    private StudentsRepository repository;
+    private Database repository;
     private DownloadManager downloadManager;
-    private IOManager ioManager;
+    private DirectoryManager ioManager;
 
     public CommandInterpreter(Tester tester,
-                              StudentsRepository repository,
+                              Database repository,
                               DownloadManager downloadManager,
-                              IOManager ioManager) {
+                              DirectoryManager ioManager) {
         this.tester = tester;
         this.repository = repository;
         this.downloadManager = downloadManager;
@@ -29,14 +33,14 @@ public class CommandInterpreter {
         String[] data = input.split("\\s+");
         String commandName = data[0].toLowerCase();
         try {
-            Command command = parseCommand(input, data, commandName);
+            Executable command = parseCommand(input, data, commandName);
             command.execute();
         } catch (Exception ex) {
             OutputWriter.displayException(ex.getMessage());
         }
     }
 
-    private Command parseCommand(String input, String[] data, String command) {
+    private Executable parseCommand(String input, String[] data, String command) {
         switch (command) {
             case "open":
                 return new OpenFileCommand(input, data, this.tester,
