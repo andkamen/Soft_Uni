@@ -1,0 +1,9 @@
+package bg.softuni.framework.lifecycle.order;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Order {
+    long value();
+}
