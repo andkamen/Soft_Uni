@@ -8,6 +8,9 @@ import com.wasteDisposal.Contracts.GarbageProcessor;
 import com.wasteDisposal.Contracts.ProcessingData;
 import com.wasteDisposal.Contracts.Waste;
 import com.wasteDisposal.enums.GarbageType;
+import com.wasteDisposal.models.garbage.BurnableGarbage;
+import com.wasteDisposal.models.garbage.RecyclableGarbage;
+import com.wasteDisposal.models.garbage.StorableGarbage;
 
 public class ProcessGarbageCommand extends BaseCommand {
     private GarbageProcessor garbageProcessor;
@@ -27,15 +30,10 @@ public class ProcessGarbageCommand extends BaseCommand {
     @Override
     public String execute() {
         this.garbage = wasteFactory.createWaste(this.arguments);
-        GarbageType type = Enum.valueOf(GarbageType.class, arguments[3].toUpperCase());
 
-        if (this.managementRequirement != null &&
-                this.managementRequirement.getGarbageTypeRequirement().equals(type) &&
-                (this.getRecyclingStation().getEnergyBalance() < this.managementRequirement.getEnergyBalanceRequirement() ||
-                        this.getRecyclingStation().getCapitalBalance() < this.managementRequirement.getCapitalBalanceRequirement())
-                ) {
-            return Messages.GARBAGE_PROCESS_DENIED;
-        }
+
+
+       //TODO implement check managementRequirements
 
         ProcessingData processingData = this.garbageProcessor.processWaste(garbage);
         this.getRecyclingStation().processGarbage(processingData);

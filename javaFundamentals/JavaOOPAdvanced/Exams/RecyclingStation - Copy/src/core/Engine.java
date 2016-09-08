@@ -1,24 +1,24 @@
-package com.core;
+package core;
 
-import com.commands.contracts.Command;
-import com.core.contracts.CommandDispatcher;
-import com.core.contracts.EngineInterface;
-import com.core.contracts.WasteFactory;
-import com.io.ConsoleReader;
-import com.io.ConsoleWriter;
-import com.io.contracts.InputReader;
-import com.io.contracts.OutputWriter;
-import com.utilities.Constants;
-import com.wasteDisposal.Annotations.Burnable;
-import com.wasteDisposal.Annotations.Recyclable;
-import com.wasteDisposal.Annotations.Storable;
-import com.wasteDisposal.Contracts.GarbageProcessor;
-import com.wasteDisposal.Contracts.StrategyHolder;
-import com.wasteDisposal.DefaultGarbageProcessor;
-import com.wasteDisposal.DefaultStrategyHolder;
-import com.wasteDisposal.Strategies.BurnableStrategy;
-import com.wasteDisposal.Strategies.RecyclableStrategy;
-import com.wasteDisposal.Strategies.StorableStrategy;
+import commands.contracts.Command;
+import core.contracts.CommandDispatcher;
+import core.contracts.EngineInterface;
+import core.contracts.RecyclingStation;
+import io.ConsoleReader;
+import io.ConsoleWriter;
+import io.contracts.InputReader;
+import io.contracts.OutputWriter;
+import utilities.Constants;
+import wasteDisposal.Annotations.Burnable;
+import wasteDisposal.Annotations.Recyclable;
+import wasteDisposal.Annotations.Storable;
+import wasteDisposal.Contracts.GarbageProcessor;
+import wasteDisposal.Contracts.StrategyHolder;
+import wasteDisposal.DefaultGarbageProcessor;
+import wasteDisposal.DefaultStrategyHolder;
+import wasteDisposal.Strategies.BurnableStrategy;
+import wasteDisposal.Strategies.RecyclableStrategy;
+import wasteDisposal.Strategies.StorableStrategy;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +30,6 @@ public class Engine implements EngineInterface {
     private StrategyHolder strategyHolder;
     private GarbageProcessor garbageProcessor;
     private CommandDispatcher commandInterpreter;
-    private WasteFactory wasteFactory;
     private Boolean isRunning;
 
     public Engine() {
@@ -38,7 +37,6 @@ public class Engine implements EngineInterface {
         this.consoleWriter = new ConsoleWriter();
         this.strategyHolder = new DefaultStrategyHolder();
         this.garbageProcessor = new DefaultGarbageProcessor();
-        this.wasteFactory = new WasteFactoryImpl();
         this.commandInterpreter = new CommandInterpreter();
     }
 
@@ -48,10 +46,18 @@ public class Engine implements EngineInterface {
         initialiseStrategyHolder();
 
         while (this.isRunning) {
+
             String inputLine = this.consoleReader.readLine();
 
             this.processInput(inputLine);
         }
+
+        //System.out.println("loaded strategies");
+//        Garbage recyclable = new RecyclableGarbage("Glass",10,1.14);
+//        ProcessingData data = garbageProcessor.processWaste(recyclable);
+//        System.out.println();
+
+
     }
 
     private void processInput(String input) {
@@ -73,8 +79,7 @@ public class Engine implements EngineInterface {
             Command command = commandInterpreter.dispatchCommand(commandName, filteredArgs);
 
             if (command == null) {
-
-                return;
+                throw new NullPointerException("Invalid Command!");
             }
 
             String commandResult = command.execute();
@@ -82,6 +87,8 @@ public class Engine implements EngineInterface {
         } catch (Exception e) {
             this.consoleWriter.writeLine(e.getMessage());
         }
+
+
     }
 
 
@@ -91,6 +98,6 @@ public class Engine implements EngineInterface {
         this.strategyHolder.addStrategy(Storable.class, new StorableStrategy());
 
         this.garbageProcessor = new DefaultGarbageProcessor(this.strategyHolder);
-        this.commandInterpreter = new CommandInterpreter(this.garbageProcessor, this.wasteFactory);
+        this.commandInterpreter = new CommandInterpreter(this.garbageProcessor);
     }
 }

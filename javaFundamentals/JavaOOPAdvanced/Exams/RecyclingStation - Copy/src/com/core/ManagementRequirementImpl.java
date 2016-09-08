@@ -16,16 +16,16 @@ public class ManagementRequirementImpl implements ManagementRequirement {
 
     @Override
     public double getEnergyBalanceRequirement() {
-        return this.energyBalanceRequirement;
+        return 0;
     }
 
     @Override
     public double getCapitalBalanceRequirement() {
-        return this.capitalBalanceRequirement;
+        return 0;
     }
 
     @Override
     public GarbageType getGarbageTypeRequirement() {
-        return this.garbageTypeRequirement;
+        return null;
     }
 }

@@ -73,7 +73,7 @@ public class Engine implements EngineInterface {
             Command command = commandInterpreter.dispatchCommand(commandName, filteredArgs);
 
             if (command == null) {
-
+                //throw new NullPointerException("Invalid Command!");
                 return;
             }
 

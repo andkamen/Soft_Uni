@@ -21,7 +21,6 @@ public class ChangeManagementRequirementCommand extends BaseCommand {
         GarbageType garbageTypeRequirement = Enum.valueOf(GarbageType.class, arguments[2].toUpperCase());
 
         ManagementRequirement managementRequirement = new ManagementRequirementImpl(energyRequirement, capitalRequirement, garbageTypeRequirement);
-        this.getRecyclingStation().changeManagementRequirement(managementRequirement);
 
         return Messages.CHANGE_MANAGEMENT_REQUIREMENT;
     }
