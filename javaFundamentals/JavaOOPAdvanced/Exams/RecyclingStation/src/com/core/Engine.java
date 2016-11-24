@@ -55,7 +55,7 @@ public class Engine implements EngineInterface {
     }
 
     private void processInput(String input) {
-        String[] splitArgs = input.split(Constants.INPUT_SPLIT_DELIMETER);
+        String[] splitArgs = input.split(Constants.INPUT_SPLIT_DELIMITER);
 
         String commandName = splitArgs[0];
 
@@ -66,7 +66,7 @@ public class Engine implements EngineInterface {
         String[] filteredArgs = null;
 
         if (splitArgs.length > 1) {
-            List<String> commandArgs = Arrays.asList(splitArgs[1].split(Constants.INPUT_COMMAND_ARGUMENTS_SPLIT_DELIMETER));
+            List<String> commandArgs = Arrays.asList(splitArgs[1].split(Constants.INPUT_COMMAND_ARGUMENTS_SPLIT_DELIMITER));
             filteredArgs = commandArgs.stream().filter(e -> e.length() >= 1).toArray(String[]::new);
         }
         try {
@@ -83,7 +83,6 @@ public class Engine implements EngineInterface {
             this.consoleWriter.writeLine(e.getMessage());
         }
     }
-
 
     private void initialiseStrategyHolder() {
         this.strategyHolder.addStrategy(Burnable.class, new BurnableStrategy());

@@ -22,9 +22,9 @@ public final class Constants {
     public static final double BURNABLE_GARBAGE_CAPITAL_USED = 0;
     public static final double STORABLE_GARBAGE_CAPITAL_USED = 0.65; // of total garbage volume
 
-    public static final String INPUT_SPLIT_DELIMETER = " ";
+    public static final String INPUT_SPLIT_DELIMITER = " ";
 
-    public static final String INPUT_COMMAND_ARGUMENTS_SPLIT_DELIMETER = "\\|";
+    public static final String INPUT_COMMAND_ARGUMENTS_SPLIT_DELIMITER = "\\|";
 
     public static final String INPUT_TERMINATING_COMMAND = "TimeToRecycle";
 }
