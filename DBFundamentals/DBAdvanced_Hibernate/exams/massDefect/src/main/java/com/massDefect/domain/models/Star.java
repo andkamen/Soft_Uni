@@ -1,10 +1,11 @@
 package com.massDefect.domain.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "stars")
-public class Star {
+public class Star implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

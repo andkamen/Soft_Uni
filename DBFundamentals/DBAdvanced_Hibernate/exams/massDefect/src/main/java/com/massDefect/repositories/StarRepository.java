@@ -10,4 +10,6 @@ public interface StarRepository extends JpaRepository<Star,Long> {
     Star findByName(String name);
 
     Star findById(Long id);
+
+
 }

@@ -1,6 +1,6 @@
 package com.massDefect.serviceImpl;
 
-import com.massDefect.domain.dto.jsonDtos.PlanetImportDto;
+import com.massDefect.domain.dto.jsonDtos.PlanetImportJSONDto;
 import com.massDefect.domain.models.Planet;
 import com.massDefect.domain.models.SolarSystem;
 import com.massDefect.domain.models.Star;
@@ -26,25 +26,25 @@ public class PlanetServiceImpl implements PlanetService {
     private SolarSystemService solarSystemService;
 
     @Override
-    public void create(PlanetImportDto planetDto) {
+    public void create(PlanetImportJSONDto planetDto) {
 
         if (planetDto == null ||
                 planetDto.getName() == null ||
-                planetDto.getSolarSystem() == null ||
-                planetDto.getSun() == null) {
+                planetDto.getSolarSystemName() == null ||
+                planetDto.getSunName() == null) {
             throw new NullPointerException();
         }
 
         Planet planet = new Planet();
         planet.setName(planetDto.getName());
 
-        SolarSystem solarSystem = this.solarSystemService.findByName(planetDto.getSolarSystem());
+        SolarSystem solarSystem = this.solarSystemService.findByName(planetDto.getSolarSystemName());
         if (solarSystem == null) {
             throw new NullPointerException();
         }
         planet.setSolarSystem(solarSystem);
 
-        Star star = this.starService.findByName(planetDto.getSun());
+        Star star = this.starService.findByName(planetDto.getSunName());
         if (star == null) {
             throw new NullPointerException();
         }

@@ -9,5 +9,6 @@ public class _03_SeriesOfLetters {
         String input = scan.nextLine();
         String result = input.replaceAll("(.)\\1+","$1");
         System.out.println(result);
+        Math.floor(2.9);
     }
 }

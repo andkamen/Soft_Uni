@@ -1,7 +1,8 @@
 package com.massDefect.serviceImpl;
 
-import com.massDefect.domain.dto.jsonDtos.AnomalyImportDto;
-import com.massDefect.domain.dto.jsonDtos.AnomalyVictimImportDto;
+import com.massDefect.domain.dto.jsonDtos.AnomalyImportJSONDto;
+import com.massDefect.domain.dto.jsonDtos.AnomalyVictimImportJSONDto;
+import com.massDefect.domain.dto.xmlDtos.AnomalyXMLDto;
 import com.massDefect.domain.models.Anomaly;
 import com.massDefect.domain.models.Person;
 import com.massDefect.domain.models.Planet;
@@ -27,16 +28,16 @@ public class AnomalyServiceImpl implements AnomalyService {
     private PersonService personService;
 
     @Override
-    public void create(AnomalyImportDto anomalyDto) {
-        if (anomalyDto == null ||
-                anomalyDto.getOriginPlanet() == null ||
-                anomalyDto.getTeleportPlanet() == null) {
+    public void create(AnomalyImportJSONDto anomalyImportJSONDto) {
+        if (anomalyImportJSONDto == null ||
+                anomalyImportJSONDto.getOriginPlanetName() == null ||
+                anomalyImportJSONDto.getTeleportPlanetName() == null) {
             throw new NullPointerException();
         }
 
         Anomaly anomaly = new Anomaly();
-        Planet originPlanet = this.planetService.findByName(anomalyDto.getOriginPlanet());
-        Planet teleportPlanet = this.planetService.findByName(anomalyDto.getTeleportPlanet());
+        Planet originPlanet = this.planetService.findByName(anomalyImportJSONDto.getOriginPlanetName());
+        Planet teleportPlanet = this.planetService.findByName(anomalyImportJSONDto.getTeleportPlanetName());
 
         if (originPlanet == null || teleportPlanet == null) {
             throw new NullPointerException();
@@ -49,15 +50,38 @@ public class AnomalyServiceImpl implements AnomalyService {
     }
 
     @Override
-    public void fillVictims(AnomalyVictimImportDto anomalyVictimDto) {
-        if (anomalyVictimDto == null ||
-                anomalyVictimDto.getId() == null ||
-                anomalyVictimDto.getPerson() == null) {
+    public void create(AnomalyXMLDto anomalyImportXMLDto) {
+        if (anomalyImportXMLDto == null ||
+                anomalyImportXMLDto.getOriginPlanetName() == null ||
+                anomalyImportXMLDto.getTeleportPlanetName() == null ||
+                anomalyImportXMLDto.getVictims() == null){
             throw new NullPointerException();
         }
 
-        Anomaly anomaly = this.anomalyRepository.findById(Long.parseLong(anomalyVictimDto.getId()));
-        Person person = this.personService.findByName(anomalyVictimDto.getPerson());
+        Anomaly anomaly = new Anomaly();
+        Planet originPlanet = this.planetService.findByName(anomalyImportXMLDto.getOriginPlanetName());
+        Planet teleportPlanet = this.planetService.findByName(anomalyImportXMLDto.getTeleportPlanetName());
+
+        if (originPlanet == null || teleportPlanet == null) {
+            throw new NullPointerException();
+        }
+
+        anomaly.setOriginPlanet(originPlanet);
+        anomaly.setTeleportPlanet(teleportPlanet);
+
+        this.anomalyRepository.saveAndFlush(anomaly);
+    }
+
+    @Override
+    public void fillVictims(AnomalyVictimImportJSONDto anomalyVictimDto) {
+        if (anomalyVictimDto == null ||
+                anomalyVictimDto.getId() == null ||
+                anomalyVictimDto.getPersonName() == null) {
+            throw new NullPointerException();
+        }
+
+        Anomaly anomaly = this.anomalyRepository.findById(anomalyVictimDto.getId());
+        Person person = this.personService.findByName(anomalyVictimDto.getPersonName());
         if (anomaly == null || person == null) {
             throw new NullPointerException();
         }

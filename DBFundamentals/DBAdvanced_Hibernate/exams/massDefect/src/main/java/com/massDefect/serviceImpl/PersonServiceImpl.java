@@ -1,6 +1,6 @@
 package com.massDefect.serviceImpl;
 
-import com.massDefect.domain.dto.jsonDtos.PersonImportDto;
+import com.massDefect.domain.dto.jsonDtos.PersonImportJSONDto;
 import com.massDefect.domain.models.Person;
 import com.massDefect.domain.models.Planet;
 import com.massDefect.service.PlanetService;
@@ -21,17 +21,17 @@ public class PersonServiceImpl implements PersonService {
     private PlanetService planetService;
 
     @Override
-    public void create(PersonImportDto personDto) {
+    public void create(PersonImportJSONDto personDto) {
         if (personDto == null ||
                 personDto.getName() == null ||
-                personDto.getHomePlanet() == null) {
+                personDto.getHomePlanetName() == null) {
             throw new NullPointerException();
         }
 
         Person person = new Person();
         person.setName(personDto.getName());
 
-        Planet planet = this.planetService.findByName(personDto.getHomePlanet());
+        Planet planet = this.planetService.findByName(personDto.getHomePlanetName());
         if (planet == null) {
             throw new NullPointerException();
         }

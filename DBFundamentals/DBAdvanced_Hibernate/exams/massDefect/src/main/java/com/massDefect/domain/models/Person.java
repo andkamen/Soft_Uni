@@ -1,10 +1,13 @@
 package com.massDefect.domain.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "persons")
-public class Person {
+public class Person implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +21,11 @@ public class Person {
     @JoinColumn(name = "home_planet_id", referencedColumnName = "id")
     private Planet homePlanet;
 
+    @ManyToMany(mappedBy = "persons")
+    private Set<Anomaly> anomalies;
+
     public Person() {
+        this.setAnomalies(new HashSet<>());
     }
 
     public Long getId() {
@@ -43,5 +50,13 @@ public class Person {
 
     public void setHomePlanet(Planet homePlanet) {
         this.homePlanet = homePlanet;
+    }
+
+    public Set<Anomaly> getAnomalies() {
+        return anomalies;
+    }
+
+    public void setAnomalies(Set<Anomaly> anomalies) {
+        this.anomalies = anomalies;
     }
 }

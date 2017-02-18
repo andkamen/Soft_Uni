@@ -2,23 +2,24 @@
 #----------------------------------
 out/
 
+javaWeb/
+DBAdvanced_Hibernate/
+mentorGroups/
 progBasics/
 progFundamentals/
 VariousEx/
-mentorGroups/
 
 GroupProject/
 
 C_Programing/
-Linux_Programing/
 C++/
 
 
 .gitignore
-exams.xlsx
-Камен Петров - 10-14.xls
-Камен Петров - 02-20.xls
-KamenPetrov-May2016 - Copy.xls
+#exams.xlsx
+#Камен Петров - 10-14.xls
+#Камен Петров - 02-20.xls
+#KamenPetrov-May2016 - Copy.xls
 
 
 #-----------------------------------------------------

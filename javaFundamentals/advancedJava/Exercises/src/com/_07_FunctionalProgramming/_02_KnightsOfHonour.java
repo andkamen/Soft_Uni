@@ -9,7 +9,7 @@ public class _02_KnightsOfHonour {
 
         String[] input = scan.nextLine().split("\\s+");
 
-        Consumer<String> print = message -> System.out.println("Sir "+message);
+        Consumer<String> print = message -> System.out.println("Sir " + message);
 
         for (String s : input) {
             print.accept(s);

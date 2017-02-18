@@ -1,6 +1,6 @@
 package com.massDefect.serviceImpl;
 
-import com.massDefect.domain.dto.jsonDtos.SolarSystemImportDto;
+import com.massDefect.domain.dto.jsonDtos.SolarSystemImportJSONDto;
 import com.massDefect.domain.models.SolarSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class SolarSystemServiceImpl implements SolarSystemService {
     private SolarSystemRepository solarSystemRepository;
 
     @Override
-    public void create(SolarSystemImportDto solarSystemDto) {
+    public void create(SolarSystemImportJSONDto solarSystemDto) {
 
         if (solarSystemDto == null || solarSystemDto.getName() == null) {
             throw new NullPointerException();

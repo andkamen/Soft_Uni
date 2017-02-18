@@ -8,4 +8,6 @@ import com.massDefect.domain.models.Person;
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
     Person findByName(String name);
+
+
 }

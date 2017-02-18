@@ -4,10 +4,11 @@ package com.massDefect.domain.models;
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "solar_systems")
-public class SolarSystem {
+public class SolarSystem implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
