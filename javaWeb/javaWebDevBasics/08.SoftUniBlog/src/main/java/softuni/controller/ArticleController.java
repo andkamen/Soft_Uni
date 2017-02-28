@@ -172,13 +172,9 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    public String getEntireArticleView(@PathVariable("id") String path, Model model, HttpSession session) {
+    public String getEntireArticleView(@PathVariable("id") String path, Model model) {
 
-        if (session.getAttribute(Constants.LOGGED_IN_USER) == null) {
-            return "redirect:/";
-        }
-
-        ArticleContentModel articleContentModel = this.articleService.getArticleById(Long.parseLong(path));
+       ArticleContentModel articleContentModel = this.articleService.getArticleById(Long.parseLong(path));
 
         model.addAttribute("article", articleContentModel);
         model.addAttribute("title", "Article");
