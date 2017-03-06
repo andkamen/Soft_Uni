@@ -1,6 +1,3 @@
-<%@ page import="softuni.models.bindingModels.LoginAttemptModel" %>
-<%@ page import="softuni.Utils.Constants" %>
-<%@ page import="softuni.models.viewModels.LoggedUserDataModel" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <header>
     <div class="navbar navbar-default navbar-static-top" role="navigation">

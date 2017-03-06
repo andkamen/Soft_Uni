@@ -16,8 +16,4 @@ public class ModelParser {
     public ModelMapper getModelMapper() {
         return modelMapper;
     }
-
-    public void setModelMapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
 }

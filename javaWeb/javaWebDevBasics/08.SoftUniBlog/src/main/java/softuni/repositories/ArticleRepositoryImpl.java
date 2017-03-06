@@ -30,7 +30,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         query.setParameter("id", id);
         List<Article> articles = query.getResultList();
 
-        return articles.isEmpty() ? null : articles.get(0);
+        return articles.stream().findFirst().orElse(null);
     }
 
     @Override

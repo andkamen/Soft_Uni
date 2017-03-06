@@ -72,12 +72,12 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/delete/{id}")
-    public String getDeleteEntireArticleView(@PathVariable("id") String path, Model model, HttpSession session) {
+    public String getDeleteEntireArticleView(@PathVariable("id") Long id, Model model, HttpSession session) {
         if (session.getAttribute(Constants.LOGGED_IN_USER) == null) {
             return "redirect:/";
         }
 
-        ArticleContentModel articleContentModel = this.articleService.getArticleById(Long.parseLong(path));
+        ArticleContentModel articleContentModel = this.articleService.getArticleById(id);
 
         model.addAttribute("article", articleContentModel);
         model.addAttribute("title", "Article");
@@ -88,14 +88,14 @@ public class ArticleController {
 
 
     @PostMapping("/articles/delete/{id}")
-    public String deleteArticle(@PathVariable("id") String path, Model model, HttpSession session) {
+    public String deleteArticle(@PathVariable("id") Long id, Model model, HttpSession session) {
         if (session.getAttribute(Constants.LOGGED_IN_USER) == null) {
             return "redirect:/";
         }
 
         List<String> errors = new ArrayList<>();
 
-        ArticleContentModel articleContentModel = this.articleService.getArticleById(Long.parseLong(path));
+        ArticleContentModel articleContentModel = this.articleService.getArticleById(id);
         LoggedUserDataModel loggedUser = (LoggedUserDataModel) session.getAttribute(Constants.LOGGED_IN_USER);
 
         if (!articleContentModel.getAuthor().getId().equals(loggedUser.getId())) {
@@ -103,7 +103,7 @@ public class ArticleController {
         }
 
         if (errors.size() == 0) {
-            this.articleService.deleteArticleById(Long.parseLong(path));
+            this.articleService.deleteArticleById(id);
 
             return "redirect:/";
         } else {
@@ -117,12 +117,12 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/edit/{id}")
-    public String getEditEntireArticleView(@PathVariable("id") String path, Model model, HttpSession session) {
+    public String getEditEntireArticleView(@PathVariable("id") Long id, Model model, HttpSession session) {
         if (session.getAttribute(Constants.LOGGED_IN_USER) == null) {
             return "redirect:/";
         }
 
-        ArticleContentModel articleContentModel = this.articleService.getArticleById(Long.parseLong(path));
+        ArticleContentModel articleContentModel = this.articleService.getArticleById(id);
 
         model.addAttribute("article", articleContentModel);
         model.addAttribute("title", "Article");
@@ -132,14 +132,14 @@ public class ArticleController {
     }
 
     @PostMapping("/articles/edit/{id}")
-    public String editEntireArticle(@PathVariable("id") String path, @ModelAttribute ArticleCreateModel articleCreateModel, Model model, HttpSession session) {
+    public String editEntireArticle(@PathVariable("id") Long id, @ModelAttribute ArticleCreateModel articleCreateModel, Model model, HttpSession session) {
 
         if (session.getAttribute(Constants.LOGGED_IN_USER) == null) {
             return "redirect:/";
         }
 
         List<String> errors = new ArrayList<>();
-        ArticleContentModel articleToUpdate = this.articleService.getArticleById(Long.parseLong(path));
+        ArticleContentModel articleToUpdate = this.articleService.getArticleById(id);
 
         String title = articleCreateModel.getTitle();
         String content = articleCreateModel.getContent();
@@ -159,7 +159,7 @@ public class ArticleController {
 
             this.articleService.updateArticle(articleToUpdate);
 
-            return "redirect:/articles/" + path;
+            return "redirect:/articles/" + id.toString();
         } else {
 
             model.addAttribute("errors", errors);

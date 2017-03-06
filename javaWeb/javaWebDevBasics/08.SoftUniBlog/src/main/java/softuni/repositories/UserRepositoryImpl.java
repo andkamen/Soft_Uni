@@ -23,7 +23,7 @@ public class UserRepositoryImpl implements UserRepository {
         query.setParameter("id", id);
         List<User> users = query.getResultList();
 
-        return users.isEmpty()?null:users.get(0);
+        return users.stream().findFirst().orElse(null);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class UserRepositoryImpl implements UserRepository {
         query.setParameter("email", email);
         List<User> users = query.getResultList();
 
-        return users.isEmpty()?null:users.get(0);
+        return users.stream().findFirst().orElse(null);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class UserRepositoryImpl implements UserRepository {
 
         List<User> users = query.getResultList();
 
-        return users.isEmpty()?null:users.get(0);
+        return users.stream().findFirst().orElse(null);
     }
 
     @Override
